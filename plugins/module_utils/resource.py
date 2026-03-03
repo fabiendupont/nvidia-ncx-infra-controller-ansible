@@ -249,6 +249,24 @@ class CrudResource(object):
             self.module.exit_json(changed=False)
             return
 
+        # If the resource is already being deleted (Terminating, Deleting, etc.),
+        # don't issue another DELETE — just wait for it to finish.
+        status = existing.get('status', '')
+        already_deleting = status in ('Terminating', 'Terminated', 'Deleting')
+
+        if already_deleting:
+            wait = self.module.params.get('wait')
+            if wait is None:
+                wait = True
+            wait_timeout = self.module.params.get('wait_timeout')
+            if wait_timeout is None:
+                wait_timeout = 600
+            if wait:
+                resource_id = existing.get('id')
+                self._wait_for_deleted(resource_id, wait_timeout)
+            self.module.exit_json(changed=False)
+            return
+
         if self.module.check_mode:
             self.module.exit_json(changed=True)
             return

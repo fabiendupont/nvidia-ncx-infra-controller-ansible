@@ -15,3 +15,4 @@ tags:
   - bare_metal
   - infrastructure
 repository: https://github.com/fabiendupont/nvidia-bare-metal-manager-ansible
+spec_version: "1.0.5"

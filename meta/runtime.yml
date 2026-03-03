@@ -34,7 +34,10 @@ action_groups:
     - nvlink_logical_partition_info
     - operating_system
     - operating_system_info
+    - rack_firmware
     - rack_info
+    - rack_power
+    - rack_validation
     - service_account_info
     - site
     - site_info
@@ -48,6 +51,10 @@ action_groups:
     - tenant_account
     - tenant_account_info
     - tenant_info
+    - tray_firmware
+    - tray_info
+    - tray_power
+    - tray_validation
     - user_info
     - vpc
     - vpc_info

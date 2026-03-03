@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.instance_info
 short_description: Retrieve Instance information
 description:
-- Instance is a Machine provisioned with an Operating System for a Tenant and attached to one of more Subnets
+- Instance is a Machine provisioned with an Operating System for a Tenant and attached to one or more Subnets
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

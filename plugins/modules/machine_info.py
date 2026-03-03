@@ -27,6 +27,10 @@ options:
     type: str
     description:
     - Filter Machines by Capability Type
+  has_instance:
+    type: bool
+    description:
+    - Filter Machines that are assigned to an Instance. siteId must be specified when using this param.
   has_instance_type:
     type: bool
     description:
@@ -63,6 +67,11 @@ options:
     type: str
     description:
     - Filter Machines by Status.  Can be specified multiple times to filter on more than one Status.
+  tenant_id:
+    type: str
+    description:
+    - Filter Machines by ID of tenant of assigned instance. Can be specified multiple times to filter on more than one Tenant
+      ID.
 '''
 
 EXAMPLES = r'''
@@ -102,6 +111,7 @@ from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import 
 ARGUMENT_SPEC = dict(
 capability_name=dict(type='str'),
 capability_type=dict(type='str'),
+has_instance=dict(type='bool'),
 has_instance_type=dict(type='bool'),
 hw_sku_device_type=dict(type='str'),
 id=dict(type='str'),
@@ -111,13 +121,14 @@ machine_id=dict(type='str'),
 query=dict(type='str'),
 site_id=dict(type='str'),
 status=dict(type='str'),
+tenant_id=dict(type='str'),
 )
 
 RESOURCE_CONFIG = {
     'resource_path': '/v2/org/{org}/carbide/machine',
     'resource_item_path': '/v2/org/{org}/carbide/machine/{machineId}',
     'id_param': 'machineId',
-    'filter_fields': ['site_id', 'id', 'has_instance_type', 'instance_type_id', 'include_metadata', 'status', 'capability_type', 'capability_name', 'hw_sku_device_type', 'query'],
+    'filter_fields': ['site_id', 'id', 'has_instance_type', 'instance_type_id', 'tenant_id', 'has_instance', 'include_metadata', 'status', 'capability_type', 'capability_name', 'hw_sku_device_type', 'query'],
 }
 
 

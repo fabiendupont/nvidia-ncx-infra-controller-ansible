@@ -10,44 +10,55 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
-module: nvidia.bare_metal.tenant_account_info
-short_description: Retrieve Tenant Account information
+module: nvidia.bare_metal.tray_info
+short_description: Retrieve Tray information
 description:
-- Tenant Account connects a Tenant with an Infrastructure Provider. It represents/contains any information pertaining to their
-  relationship.
+- Tray operations
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
 - nvidia.bare_metal.auth
 options:
-  account_id:
+  component_id:
     type: str
     description:
-    - 'ID path parameter: account_id.'
+    - Filter by component ID. Can be specified multiple times to filter on more than one component ID. Requires 'type' parameter.
   id:
     type: str
     description:
-    - ID of the resource to retrieve.
-  infrastructure_provider_id:
+    - Filter by tray UUID. Can be specified multiple times to filter on more than one tray ID.
+  rack_id:
     type: str
     description:
-    - Filter TenantAccounts by Infrastructure Provider ID
-  tenant_id:
+    - Filter by Rack ID
+  rack_name:
     type: str
     description:
-    - Filter TenantAccounts by Tenant ID
+    - Filter by Rack name
+  site_id:
+    type: str
+    description:
+    - ID of the Site to retrieve Trays from
+  type:
+    type: str
+    description:
+    - Filter by tray type
+    choices:
+    - compute
+    - switch
+    - powershelf
 '''
 
 EXAMPLES = r'''
 ---
-- name: List all Tenant Account resources
-  nvidia.bare_metal.tenant_account_info:
+- name: List all Tray resources
+  nvidia.bare_metal.tray_info:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
 
-- name: Get a specific Tenant Account by ID
-  nvidia.bare_metal.tenant_account_info:
+- name: Get a specific Tray by ID
+  nvidia.bare_metal.tray_info:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
@@ -73,17 +84,19 @@ from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import 
 
 
 ARGUMENT_SPEC = dict(
-account_id=dict(type='str'),
+component_id=dict(type='str'),
 id=dict(type='str'),
-infrastructure_provider_id=dict(type='str'),
-tenant_id=dict(type='str'),
+rack_id=dict(type='str'),
+rack_name=dict(type='str'),
+site_id=dict(type='str'),
+type=dict(type='str', choices=['compute', 'switch', 'powershelf']),
 )
 
 RESOURCE_CONFIG = {
-    'resource_path': '/v2/org/{org}/carbide/tenant/account',
-    'resource_item_path': '/v2/org/{org}/carbide/tenant/account/{accountId}',
-    'id_param': 'accountId',
-    'filter_fields': ['infrastructure_provider_id', 'tenant_id'],
+    'resource_path': '/v2/org/{org}/carbide/tray',
+    'resource_item_path': '/v2/org/{org}/carbide/tray/{id}',
+    'id_param': 'id',
+    'filter_fields': ['site_id', 'rack_id', 'rack_name', 'type', 'component_id', 'id'],
 }
 
 

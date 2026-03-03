@@ -10,27 +10,31 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
-module: nvidia.bare_metal.metadata_info
-short_description: Retrieve Metadata information
+module: nvidia.bare_metal.rack_validation
+short_description: Manage Rack resources
 description:
-- Metadata describes various system level attributes of the API server
+- Rack operations
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
 - nvidia.bare_metal.auth
-options: {}
+options:
+  id:
+    type: str
+    description:
+    - ID of the resource. When provided, targets a single resource.
 '''
 
 EXAMPLES = r'''
 ---
-- name: List all Metadata resources
-  nvidia.bare_metal.metadata_info:
+- name: Run validation on all rack resources
+  nvidia.bare_metal.rack_validation:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
 
-- name: Get a specific Metadata by ID
-  nvidia.bare_metal.metadata_info:
+- name: Run validation on a specific rack
+  nvidia.bare_metal.rack_validation:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
@@ -39,31 +43,27 @@ EXAMPLES = r'''
 
 RETURN = r'''
 ---
-resources:
-    description: List of resources.
-    type: list
-    returned: when no id is specified
-    elements: dict
-resource:
-    description: Single resource details.
+result:
+    description: The action result.
     type: dict
-    returned: when id is specified
+    returned: always
 '''
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.nvidia.bare_metal.plugins.module_utils.common import get_auth_argument_spec
-from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import InfoResource
+from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import ActionResource
 
 
 ARGUMENT_SPEC = dict(
-
+id=dict(type='str'),
 )
 
 RESOURCE_CONFIG = {
-    'resource_path': '/v2/org/{org}/carbide/metadata',
-    'resource_item_path': '',
-    'id_param': 'id',
-    'filter_fields': [],
+    'resource_path': '/v2/org/{org}/carbide/rack/validation',
+    'resource_item_path': '/v2/org/{org}/carbide/rack/{id}/validation',
+    'method': 'GET',
+    'body_fields': [],
+    'query_fields': [],
 }
 
 
@@ -71,7 +71,7 @@ def main():
     auth_spec = get_auth_argument_spec()
     auth_spec.update(ARGUMENT_SPEC)
     module = AnsibleModule(argument_spec=auth_spec, supports_check_mode=True)
-    InfoResource(module, RESOURCE_CONFIG).run()
+    ActionResource(module, RESOURCE_CONFIG).run()
 
 
 if __name__ == "__main__":

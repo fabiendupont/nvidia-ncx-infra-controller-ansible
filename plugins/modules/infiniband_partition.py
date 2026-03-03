@@ -34,7 +34,7 @@ options:
   name:
     type: str
     description:
-    - Name of the Parition to create
+    - Name of the Partition to create
   site_id:
     type: str
     description:

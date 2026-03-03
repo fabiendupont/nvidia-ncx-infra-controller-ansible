@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.tenant_account
 short_description: Manage Tenant Account resources
 description:
-- Tenant Account connects a Tenant with an Infrastructure Provider. It represent/contains any information pertaining to their
+- Tenant Account connects a Tenant with an Infrastructure Provider. It represents/contains any information pertaining to their
   relationship.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team

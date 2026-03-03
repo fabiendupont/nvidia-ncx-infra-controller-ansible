@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.dpu_extension_service_info
 short_description: Retrieve DPU Extension Service information
 description:
-- DPU Extension Service allows users to run custom services in the DPUs of their Instance
+- DPU Extension Service allows users to run custom services in the DPUs of their Instances
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

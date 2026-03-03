@@ -43,6 +43,10 @@ options:
     type: bool
     description:
     - Filter Sites by NVLink partitioning enabled flag. Requires Provider Admin role.
+  is_rack_level_administration_enabled:
+    type: bool
+    description:
+    - Filter Sites by Rack Level Administration enabled flag. Requires Provider Admin role.
   query:
     type: str
     description:
@@ -103,6 +107,7 @@ infrastructure_provider_id=dict(type='str'),
 is_native_networking_enabled=dict(type='bool'),
 is_network_security_group_enabled=dict(type='bool'),
 is_nv_link_partition_enabled=dict(type='bool'),
+is_rack_level_administration_enabled=dict(type='bool'),
 query=dict(type='str'),
 site_id=dict(type='str'),
 status=dict(type='str'),
@@ -113,7 +118,7 @@ RESOURCE_CONFIG = {
     'resource_path': '/v2/org/{org}/carbide/site',
     'resource_item_path': '/v2/org/{org}/carbide/site/{siteId}',
     'id_param': 'siteId',
-    'filter_fields': ['infrastructure_provider_id', 'tenant_id', 'status', 'is_native_networking_enabled', 'is_network_security_group_enabled', 'is_nv_link_partition_enabled', 'include_machine_stats', 'query'],
+    'filter_fields': ['infrastructure_provider_id', 'tenant_id', 'status', 'is_native_networking_enabled', 'is_network_security_group_enabled', 'is_nv_link_partition_enabled', 'is_rack_level_administration_enabled', 'include_machine_stats', 'query'],
 }
 
 

@@ -10,8 +10,8 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
-module: nvidia.bare_metal.rack_info
-short_description: Retrieve Rack information
+module: nvidia.bare_metal.rack_firmware
+short_description: Manage Rack resources
 description:
 - Rack operations
 version_added: 1.0.0
@@ -19,38 +19,40 @@ author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
 - nvidia.bare_metal.auth
 options:
+  filter:
+    type: dict
+    description:
+    - Filter criteria for selecting racks in batch operations. If omitted or empty, all racks in the site are targeted.
+    suboptions:
+      names:
+        type: list
+        description:
+        - names parameter.
+        elements: str
   id:
     type: str
     description:
-    - ID of the resource to retrieve.
-  include_components:
-    type: bool
-    description:
-    - Include rack components in response
-  manufacturer:
-    type: str
-    description:
-    - Filter by manufacturer
-  name:
-    type: str
-    description:
-    - Filter by rack name
+    - ID of the resource. When provided, targets a single resource.
   site_id:
     type: str
     description:
-    - ID of the Site to retrieve Racks from
+    - ID of the Site
+  version:
+    type: str
+    description:
+    - Target firmware version.
 '''
 
 EXAMPLES = r'''
 ---
-- name: List all Rack resources
-  nvidia.bare_metal.rack_info:
+- name: Run firmware on all rack resources
+  nvidia.bare_metal.rack_firmware:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
 
-- name: Get a specific Rack by ID
-  nvidia.bare_metal.rack_info:
+- name: Run firmware on a specific rack
+  nvidia.bare_metal.rack_firmware:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
@@ -59,35 +61,32 @@ EXAMPLES = r'''
 
 RETURN = r'''
 ---
-resources:
-    description: List of resources.
-    type: list
-    returned: when no id is specified
-    elements: dict
-resource:
-    description: Single resource details.
+result:
+    description: The action result.
     type: dict
-    returned: when id is specified
+    returned: always
 '''
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.nvidia.bare_metal.plugins.module_utils.common import get_auth_argument_spec
-from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import InfoResource
+from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import ActionResource
 
 
 ARGUMENT_SPEC = dict(
+filter=dict(type='dict', options=dict(
+    names=dict(type='list', elements='str'),
+)),
 id=dict(type='str'),
-include_components=dict(type='bool'),
-manufacturer=dict(type='str'),
-name=dict(type='str'),
 site_id=dict(type='str'),
+version=dict(type='str'),
 )
 
 RESOURCE_CONFIG = {
-    'resource_path': '/v2/org/{org}/carbide/rack',
-    'resource_item_path': '/v2/org/{org}/carbide/rack/{id}',
-    'id_param': 'id',
-    'filter_fields': ['site_id', 'include_components', 'name', 'manufacturer'],
+    'resource_path': '/v2/org/{org}/carbide/rack/firmware',
+    'resource_item_path': '/v2/org/{org}/carbide/rack/{id}/firmware',
+    'method': 'PATCH',
+    'body_fields': ['site_id', 'version', 'filter'],
+    'query_fields': [],
 }
 
 
@@ -95,7 +94,7 @@ def main():
     auth_spec = get_auth_argument_spec()
     auth_spec.update(ARGUMENT_SPEC)
     module = AnsibleModule(argument_spec=auth_spec, supports_check_mode=True)
-    InfoResource(module, RESOURCE_CONFIG).run()
+    ActionResource(module, RESOURCE_CONFIG).run()
 
 
 if __name__ == "__main__":

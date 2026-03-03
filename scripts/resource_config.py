@@ -56,8 +56,7 @@ RESOURCE_OVERRIDES = {
         'error_statuses': ['Error'],
     },
 
-    # Expected machine: batch endpoint exists but is separate (under /forge/)
-    # We only generate the CRUD module for the /carbide/ paths
+    # Expected machine: batch endpoint exists but is separate
     'expected_machine': {
         'scope_fields': ['site_id'],
     },
@@ -146,6 +145,7 @@ READ_ONLY_TAGS = {
     'Machine Capability',
     'Rack',
     'SKU',
+    'Tray',
 }
 
 # Tags to skip entirely (deprecated endpoints, sub-resource-only, etc.)
@@ -195,13 +195,32 @@ SKIP_PATHS = {
     '/v2/org/{org}/carbide/ipblock/{ipBlockId}/derived',
     # DPU Extension Service versioned sub-resource
     '/v2/org/{org}/carbide/dpu-extension-service/{dpuExtensionServiceId}/version/{version}',
-    # Expected machine batch (under /forge/ not /carbide/)
-    '/v2/org/{org}/forge/expected-machine/batch',
+    # Expected machine batch
+    '/v2/org/{org}/carbide/expected-machine/batch',
     # Instance batch (handled separately as instance_batch module)
     '/v2/org/{org}/carbide/instance/batch',
     # Machine capability - tagged as "Machine" in spec but is a separate read-only resource;
     # handled via PATH_TAG_OVERRIDES
     '/v2/org/{org}/carbide/machine-capability',
+    # Stats endpoints (skipped for now)
+    '/v2/org/{org}/carbide/machine/gpu/stats',
+    '/v2/org/{org}/carbide/machine/instance-type/stats/summary',
+    '/v2/org/{org}/carbide/machine/instance-type/stats',
+    '/v2/org/{org}/carbide/tenant/instance-type/stats',
+    # Rack action sub-paths (generated explicitly via ACTION_MODULES)
+    '/v2/org/{org}/carbide/rack/validation',
+    '/v2/org/{org}/carbide/rack/{id}/validation',
+    '/v2/org/{org}/carbide/rack/power',
+    '/v2/org/{org}/carbide/rack/{id}/power',
+    '/v2/org/{org}/carbide/rack/firmware',
+    '/v2/org/{org}/carbide/rack/{id}/firmware',
+    # Tray action sub-paths (generated explicitly via ACTION_MODULES)
+    '/v2/org/{org}/carbide/tray/validation',
+    '/v2/org/{org}/carbide/tray/{id}/validation',
+    '/v2/org/{org}/carbide/tray/power',
+    '/v2/org/{org}/carbide/tray/{id}/power',
+    '/v2/org/{org}/carbide/tray/firmware',
+    '/v2/org/{org}/carbide/tray/{id}/firmware',
 }
 
 # Batch endpoints: map from module_name -> batch path info
@@ -220,5 +239,59 @@ INFO_ONLY_MODULES = {
         'collection_path': '/v2/org/{org}/carbide/machine-capability',
         'tag': 'Machine Capability',
         'response_schema_ref': '#/components/schemas/MachineCapability',
+    },
+}
+
+# Action endpoints: imperative operations (validation, power, firmware)
+ACTION_MODULES = {
+    'rack_validation': {
+        'collection_path': '/v2/org/{org}/carbide/rack/validation',
+        'item_path': '/v2/org/{org}/carbide/rack/{id}/validation',
+        'tag': 'Rack',
+        'method': 'GET',
+        'response_schema_ref': '#/components/schemas/RackValidationResult',
+    },
+    'rack_power': {
+        'collection_path': '/v2/org/{org}/carbide/rack/power',
+        'item_path': '/v2/org/{org}/carbide/rack/{id}/power',
+        'tag': 'Rack',
+        'method': 'PATCH',
+        'collection_request_schema_ref': '#/components/schemas/BatchUpdateRackPowerStateRequest',
+        'item_request_schema_ref': '#/components/schemas/UpdatePowerStateRequest',
+        'response_schema_ref': '#/components/schemas/UpdatePowerStateResponse',
+    },
+    'rack_firmware': {
+        'collection_path': '/v2/org/{org}/carbide/rack/firmware',
+        'item_path': '/v2/org/{org}/carbide/rack/{id}/firmware',
+        'tag': 'Rack',
+        'method': 'PATCH',
+        'collection_request_schema_ref': '#/components/schemas/BatchRackFirmwareUpdateRequest',
+        'item_request_schema_ref': '#/components/schemas/FirmwareUpdateRequest',
+        'response_schema_ref': '#/components/schemas/FirmwareUpdateResponse',
+    },
+    'tray_validation': {
+        'collection_path': '/v2/org/{org}/carbide/tray/validation',
+        'item_path': '/v2/org/{org}/carbide/tray/{id}/validation',
+        'tag': 'Tray',
+        'method': 'GET',
+        'response_schema_ref': '#/components/schemas/RackValidationResult',
+    },
+    'tray_power': {
+        'collection_path': '/v2/org/{org}/carbide/tray/power',
+        'item_path': '/v2/org/{org}/carbide/tray/{id}/power',
+        'tag': 'Tray',
+        'method': 'PATCH',
+        'collection_request_schema_ref': '#/components/schemas/BatchUpdateTrayPowerStateRequest',
+        'item_request_schema_ref': '#/components/schemas/UpdatePowerStateRequest',
+        'response_schema_ref': '#/components/schemas/UpdatePowerStateResponse',
+    },
+    'tray_firmware': {
+        'collection_path': '/v2/org/{org}/carbide/tray/firmware',
+        'item_path': '/v2/org/{org}/carbide/tray/{id}/firmware',
+        'tag': 'Tray',
+        'method': 'PATCH',
+        'collection_request_schema_ref': '#/components/schemas/BatchTrayFirmwareUpdateRequest',
+        'item_request_schema_ref': '#/components/schemas/FirmwareUpdateRequest',
+        'response_schema_ref': '#/components/schemas/FirmwareUpdateResponse',
     },
 }

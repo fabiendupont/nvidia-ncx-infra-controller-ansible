@@ -416,6 +416,61 @@ class InfoResource(object):
             )
 
 
+class ActionResource(object):
+    """Base class for action modules (validation, power control, firmware updates)."""
+
+    def __init__(self, module, config):
+        self.module = module
+        self.config = config
+        self.client = BareMetalClient(module)
+        self.collection_path = config['resource_path']
+        self.item_path = config.get('resource_item_path')
+        self.method = config.get('method', 'PATCH')
+        self.body_fields = config.get('body_fields', [])
+        self.query_fields = config.get('query_fields', [])
+
+    def run(self):
+        params = self.module.params
+        resource_id = params.get('id')
+
+        if resource_id and self.item_path:
+            item_params = dict(params)
+            item_params['id'] = resource_id
+            path = _resolve_path(self.item_path, item_params, self.client.org)
+        else:
+            path = _resolve_path(self.collection_path, params, self.client.org)
+
+        if self.method == 'GET':
+            # Build query string into path for read-only actions (e.g., validation)
+            query_parts = []
+            for field in self.query_fields:
+                val = params.get(field)
+                if val is not None:
+                    query_parts.append('%s=%s' % (snake_to_camel(field), val))
+            if query_parts:
+                path = '%s?%s' % (path, '&'.join(query_parts))
+            result = self.client.get(path)
+            self.module.exit_json(
+                changed=False,
+                result=convert_keys(result, camel_to_snake) if result else {},
+            )
+        else:
+            if self.module.check_mode:
+                self.module.exit_json(changed=True, result={})
+                return
+            body = {}
+            for field in self.body_fields:
+                val = params.get(field)
+                if val is not None:
+                    body[field] = val
+            request_body = convert_keys(body, snake_to_camel)
+            result = self.client.update(path, request_body)
+            self.module.exit_json(
+                changed=True,
+                result=convert_keys(result, camel_to_snake) if result else {},
+            )
+
+
 class BatchResource(object):
     """Base class for batch-create-only modules (e.g., instance_batch)."""
 

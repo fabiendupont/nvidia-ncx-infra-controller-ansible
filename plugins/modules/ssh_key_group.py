@@ -123,6 +123,7 @@ RESOURCE_CONFIG = {
     'error_statuses': ['Error'],
     'no_create': False,
     'delete_body_fields': [],
+    'version_field': 'version',
 }
 
 

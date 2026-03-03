@@ -57,6 +57,7 @@ class CrudResource(object):
         self.error_statuses = config.get('error_statuses', ['Error'])
         self.no_create = config.get('no_create', False)
         self.delete_body_fields = config.get('delete_body_fields', [])
+        self.version_field = config.get('version_field')
 
     def _resolve_collection_path(self):
         """Resolve all path parameters in the collection path."""
@@ -140,10 +141,22 @@ class CrudResource(object):
             existing_snake = convert_keys(existing, camel_to_snake)
 
             update_data = self._build_payload(self.update_fields)
+
+            # Don't diff the version field — it's for concurrency control,
+            # not a user-visible attribute.
+            version_field = self.version_field
+            update_data.pop(version_field, None) if version_field else None
+
             changes = {}
             for key, value in update_data.items():
-                if value is not None and existing_snake.get(key) != value:
+                existing_value = existing_snake.get(key)
+                if value is not None and existing_value is not None and existing_value != value:
                     changes[key] = value
+                elif value is not None and existing_value is None:
+                    # Field provided by user but not in the response — this is
+                    # a write-only field (e.g., site_ids vs site_associations).
+                    # Skip it from the diff; we can't compare what we can't read.
+                    pass
 
             if not changes:
                 self.module.exit_json(
@@ -155,6 +168,13 @@ class CrudResource(object):
             if self.module.check_mode:
                 self.module.exit_json(changed=True, resource=existing_snake)
                 return
+
+            # Inject the version from the existing resource if the API requires
+            # it for optimistic concurrency control.
+            if version_field:
+                version_value = existing_snake.get(version_field)
+                if version_value:
+                    changes[version_field] = version_value
 
             # Convert the diff to camelCase at all levels before sending
             camel_changes = convert_keys(changes, snake_to_camel)

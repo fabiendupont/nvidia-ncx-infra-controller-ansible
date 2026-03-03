@@ -171,9 +171,9 @@ class InventoryModule(BaseInventoryPlugin, Constructable):
     NAME = 'nvidia.bare_metal.bmm'
 
     def verify_file(self, path):
-        """Accept files ending in .bmm.yml or .bmm.yaml."""
+        """Accept any YAML file that could be a BMM inventory source."""
         if super(InventoryModule, self).verify_file(path):
-            if path.endswith(('.bmm.yml', '.bmm.yaml')):
+            if path.endswith(('.yml', '.yaml')):
                 return True
         return False
 

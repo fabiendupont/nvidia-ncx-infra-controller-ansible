@@ -730,6 +730,15 @@ def generate_crud_module(resource_info, spec, overrides):
                     'description': 'ID path parameter: %s.' % snake_param,
                 }
 
+    # Detect version field for optimistic concurrency control.
+    # If the update schema has a required 'version' field, the PATCH must
+    # include the current version from the existing resource.
+    version_field = None
+    if resource_info.get('update_schema'):
+        update_required = resource_info['update_schema'].get('required', [])
+        if 'version' in update_required:
+            version_field = 'version'
+
     # Build resource config
     resource_config = {
         'resource_path': resource_info['collection_path'] or '',
@@ -743,6 +752,7 @@ def generate_crud_module(resource_info, spec, overrides):
         'error_statuses': overrides.get('error_statuses', ['Error']),
         'no_create': overrides.get('no_create', False),
         'delete_body_fields': delete_body_fields,
+        'version_field': version_field,
     }
 
     # Format as Python

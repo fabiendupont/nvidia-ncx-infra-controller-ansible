@@ -1,0 +1,4 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Fabien Dupont
+# SPDX-License-Identifier: Apache-2.0
+
+requires_ansible: '>=2.14.0'

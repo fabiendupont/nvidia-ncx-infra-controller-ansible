@@ -1,0 +1,17 @@
+# SPDX-FileCopyrightText: Copyright (c) 2026 Fabien Dupont
+# SPDX-License-Identifier: Apache-2.0
+
+namespace: nvidia
+name: bare_metal
+version: 1.0.0
+readme: README.md
+authors:
+  - NVIDIA Bare Metal Manager Dev Team
+description: Ansible collection for managing NVIDIA Bare Metal Manager resources
+license:
+  - Apache-2.0
+tags:
+  - nvidia
+  - bare_metal
+  - infrastructure
+repository: https://github.com/fabiendupont/nvidia-bare-metal-manager-ansible

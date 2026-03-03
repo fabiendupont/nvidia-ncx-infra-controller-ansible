@@ -110,12 +110,16 @@ class CrudResource(object):
         camel_name_field = snake_to_camel(self.name_field)
         matches = [r for r in resources if r.get(camel_name_field) == name]
 
-        # Also filter by scope fields on the response in case the API doesn't filter server-side
+        # Also filter by scope fields on the response in case the API
+        # doesn't filter server-side. Only apply when the response actually
+        # contains the field — some resources (e.g., SshKey) don't include
+        # the parent ID in their response schema.
         for field in self.scope_fields:
             val = params.get(field)
             if val:
                 camel_field = snake_to_camel(field)
-                matches = [r for r in matches if r.get(camel_field) == val]
+                matches = [r for r in matches
+                           if camel_field not in r or r.get(camel_field) == val]
 
         if len(matches) > 1:
             self.module.fail_json(

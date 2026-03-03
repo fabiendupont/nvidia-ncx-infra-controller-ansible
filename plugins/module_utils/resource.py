@@ -38,6 +38,29 @@ def _resolve_path(path, module_params, org):
     return _PATH_PARAM_RE.sub(_replace, path)
 
 
+def _values_differ(desired, existing):
+    """Compare a user-provided value against the API response value.
+
+    For simple types, does a direct comparison.  For lists of dicts
+    (e.g., interfaces), compares only the keys the user provided —
+    the API response includes read-only fields (id, status, created, etc.)
+    that the user never specifies.
+    """
+    if isinstance(desired, list) and isinstance(existing, list):
+        if len(desired) != len(existing):
+            return True
+        for d_item, e_item in zip(desired, existing):
+            if isinstance(d_item, dict) and isinstance(e_item, dict):
+                # Compare only the keys present in the desired dict
+                for k, v in d_item.items():
+                    if e_item.get(k) != v:
+                        return True
+            elif d_item != e_item:
+                return True
+        return False
+    return desired != existing
+
+
 class CrudResource(object):
     """Base class for CRUD resource modules (state=present/absent)."""
 
@@ -154,13 +177,14 @@ class CrudResource(object):
             changes = {}
             for key, value in update_data.items():
                 existing_value = existing_snake.get(key)
-                if value is not None and existing_value is not None and existing_value != value:
-                    changes[key] = value
-                elif value is not None and existing_value is None:
+                if value is not None and existing_value is None:
                     # Field provided by user but not in the response — this is
                     # a write-only field (e.g., site_ids vs site_associations).
                     # Skip it from the diff; we can't compare what we can't read.
                     pass
+                elif value is not None and existing_value is not None:
+                    if _values_differ(value, existing_value):
+                        changes[key] = value
 
             if not changes:
                 self.module.exit_json(

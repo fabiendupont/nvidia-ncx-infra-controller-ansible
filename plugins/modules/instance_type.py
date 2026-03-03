@@ -35,6 +35,10 @@ options:
     type: str
     description:
     - 'ID path parameter: instance_type_id.'
+  labels:
+    type: dict
+    description:
+    - labels parameter.
   machine_capabilities:
     type: list
     description:
@@ -144,6 +148,7 @@ controller_machine_type=dict(type='str'),
 description=dict(type='str'),
 id=dict(type='str'),
 instance_type_id=dict(type='str'),
+labels=dict(type='dict'),
 machine_capabilities=dict(type='list', elements='dict', options=dict(
     capacity=dict(type='str'),
     count=dict(type='int'),
@@ -166,8 +171,8 @@ RESOURCE_CONFIG = {
     'resource_item_path': '/v2/org/{org}/carbide/instance/type/{instanceTypeId}',
     'id_param': 'instanceTypeId',
     'name_field': 'name',
-    'create_schema_fields': ['name', 'description', 'site_id', 'controller_machine_type', 'machine_capabilities'],
-    'update_schema_fields': ['name', 'description', 'machine_capabilities'],
+    'create_schema_fields': ['name', 'description', 'site_id', 'labels', 'controller_machine_type', 'machine_capabilities'],
+    'update_schema_fields': ['name', 'description', 'labels', 'machine_capabilities'],
     'scope_fields': ['site_id'],
     'ready_statuses': ['Ready'],
     'error_statuses': ['Error'],

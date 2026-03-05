@@ -62,6 +62,10 @@ options:
     choices:
     - present
     - absent
+  vni:
+    type: int
+    description:
+    - Explicitly requested VNI for the VPC
   vpc_id:
     type: str
     description:
@@ -118,6 +122,7 @@ network_virtualization_type=dict(type='str', choices=['ETHERNET_VIRTUALIZER', 'F
 nv_link_logical_partition_id=dict(type='str'),
 site_id=dict(type='str'),
 state=dict(type='str', choices=['present', 'absent']),
+vni=dict(type='int'),
 vpc_id=dict(type='str'),
 wait=dict(type='bool'),
 wait_timeout=dict(type='int'),
@@ -128,7 +133,7 @@ RESOURCE_CONFIG = {
     'resource_item_path': '/v2/org/{org}/carbide/vpc/{vpcId}',
     'id_param': 'vpcId',
     'name_field': 'name',
-    'create_schema_fields': ['name', 'description', 'site_id', 'network_virtualization_type', 'network_security_group_id', 'nv_link_logical_partition_id', 'labels'],
+    'create_schema_fields': ['id', 'name', 'description', 'site_id', 'network_virtualization_type', 'network_security_group_id', 'vni', 'nv_link_logical_partition_id', 'labels'],
     'update_schema_fields': ['name', 'description', 'network_security_group_id', 'nv_link_logical_partition_id', 'labels'],
     'scope_fields': ['site_id'],
     'ready_statuses': ['Ready'],

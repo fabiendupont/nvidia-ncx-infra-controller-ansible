@@ -34,7 +34,8 @@ options:
   prefix_length:
     type: int
     description:
-    - prefix_length parameter.
+    - Prefix length for the VPC Prefix. Valid range is 8 to 31, and max usable value depends on prefix length of parent IP
+      Block.
   site_id:
     type: str
     description:

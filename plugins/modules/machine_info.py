@@ -34,7 +34,7 @@ options:
   has_instance_type:
     type: bool
     description:
-    - Filter Machines that have been assigned an Instance Type. siteId must be specified when using this param.
+    - Filter Machines that have been assigned an Instance Type.
   hw_sku_device_type:
     type: str
     description:
@@ -51,6 +51,10 @@ options:
     type: str
     description:
     - Filter Machines by Instance Type ID.  Can be specified multiple times to filter on more than one Instance Type ID.
+  is_missing_on_site:
+    type: bool
+    description:
+    - Filter Machines that are missing on Site.
   machine_id:
     type: str
     description:
@@ -117,6 +121,7 @@ hw_sku_device_type=dict(type='str'),
 id=dict(type='str'),
 include_metadata=dict(type='bool'),
 instance_type_id=dict(type='str'),
+is_missing_on_site=dict(type='bool'),
 machine_id=dict(type='str'),
 query=dict(type='str'),
 site_id=dict(type='str'),
@@ -128,7 +133,7 @@ RESOURCE_CONFIG = {
     'resource_path': '/v2/org/{org}/carbide/machine',
     'resource_item_path': '/v2/org/{org}/carbide/machine/{machineId}',
     'id_param': 'machineId',
-    'filter_fields': ['site_id', 'id', 'has_instance_type', 'instance_type_id', 'tenant_id', 'has_instance', 'include_metadata', 'status', 'capability_type', 'capability_name', 'hw_sku_device_type', 'query'],
+    'filter_fields': ['site_id', 'id', 'has_instance_type', 'instance_type_id', 'tenant_id', 'has_instance', 'is_missing_on_site', 'include_metadata', 'status', 'capability_type', 'capability_name', 'hw_sku_device_type', 'query'],
 }
 
 

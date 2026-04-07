@@ -56,7 +56,7 @@ options:
     - routing_type parameter.
     choices:
     - Public
-    - Datacenter Only
+    - DatacenterOnly
   site_id:
     type: str
     description:
@@ -118,7 +118,7 @@ name=dict(type='str'),
 prefix=dict(type='str'),
 prefix_length=dict(type='int'),
 protocol_version=dict(type='str', choices=['IPv4', 'IPv6']),
-routing_type=dict(type='str', choices=['Public', 'Datacenter Only']),
+routing_type=dict(type='str', choices=['Public', 'DatacenterOnly']),
 site_id=dict(type='str'),
 state=dict(type='str', choices=['present', 'absent']),
 wait=dict(type='bool'),

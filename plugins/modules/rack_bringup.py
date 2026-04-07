@@ -10,10 +10,10 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
-module: nvidia.bare_metal.infiniband_partition
-short_description: Manage InfiniBand Partition resources
+module: nvidia.bare_metal.rack_bringup
+short_description: Manage rack_bringup resources
 description:
-- Partitions provide networking support for high-performance computing that features very high throughput and very low latency.
+- Manage rack_bringup resources
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -22,23 +22,15 @@ options:
   description:
     type: str
     description:
-    - Optional description of the Partition
+    - Optional description for the bring up operation
   id:
     type: str
     description:
     - ID of the resource. Used for lookup.
-  infini_band_partition_id:
-    type: str
-    description:
-    - 'ID path parameter: infini_band_partition_id.'
-  name:
-    type: str
-    description:
-    - Name of the Partition to create
   site_id:
     type: str
     description:
-    - ID of the Site the Partition should belong to
+    - ID of the Site
   state:
     type: str
     description:
@@ -58,21 +50,21 @@ options:
 
 EXAMPLES = r'''
 ---
-- name: Create a InfiniBand Partition
-  nvidia.bare_metal.infiniband_partition:
+- name: Create a rack_bringup
+  nvidia.bare_metal.rack_bringup:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
     state: present
-    name: "my-infiniband-partition"
+    name: "my-rack-bringup"
 
-- name: Delete a InfiniBand Partition
-  nvidia.bare_metal.infiniband_partition:
+- name: Delete a rack_bringup
+  nvidia.bare_metal.rack_bringup:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
     state: absent
-    name: "my-infiniband-partition"
+    name: "my-rack-bringup"
 '''
 
 RETURN = r'''
@@ -91,8 +83,6 @@ from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import 
 ARGUMENT_SPEC = dict(
 description=dict(type='str'),
 id=dict(type='str'),
-infini_band_partition_id=dict(type='str'),
-name=dict(type='str'),
 site_id=dict(type='str'),
 state=dict(type='str', choices=['present', 'absent']),
 wait=dict(type='bool'),
@@ -100,13 +90,13 @@ wait_timeout=dict(type='int'),
 )
 
 RESOURCE_CONFIG = {
-    'resource_path': '/v2/org/{org}/carbide/infiniband-interface',
-    'resource_item_path': '/v2/org/{org}/carbide/infiniband-partition/{infiniBandPartitionId}',
-    'id_param': 'infiniBandPartitionId',
-    'name_field': 'name',
-    'create_schema_fields': ['name', 'description', 'site_id'],
-    'update_schema_fields': ['name', 'description'],
-    'scope_fields': ['site_id'],
+    'resource_path': '/v2/org/{org}/carbide/rack/{id}/bringup',
+    'resource_item_path': '',
+    'id_param': 'id',
+    'name_field': None,
+    'create_schema_fields': ['site_id', 'description'],
+    'update_schema_fields': [],
+    'scope_fields': [],
     'ready_statuses': ['Ready'],
     'error_statuses': ['Error'],
     'no_create': False,

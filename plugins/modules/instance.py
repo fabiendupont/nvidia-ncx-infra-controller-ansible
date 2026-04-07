@@ -109,6 +109,10 @@ options:
         type: int
         description:
         - device_instance parameter.
+      ip_address:
+        type: str
+        description:
+        - ip_address parameter.
       is_physical:
         type: bool
         description:
@@ -174,7 +178,9 @@ options:
   nv_link_interfaces:
     type: list
     description:
-    - Associate one or more NVLink Logical Partitions with this Instance
+    - Define Interfaces to associate Instance GPUs with NVLink Logical Partitions. A subset of GPUs may be specified (it is
+      not required to include all GPUs). Each item references one GPU index (`deviceInstance`) and one NVLink Logical Partition.
+      Different interfaces may reference different NVLink Logical Partitions.
     elements: dict
     suboptions:
       device_instance:
@@ -291,6 +297,7 @@ instance_type_id=dict(type='str'),
 interfaces=dict(type='list', elements='dict', options=dict(
     device=dict(type='str'),
     device_instance=dict(type='int'),
+    ip_address=dict(type='str'),
     is_physical=dict(type='bool'),
     subnet_id=dict(type='str'),
     virtual_function_id=dict(type='int'),

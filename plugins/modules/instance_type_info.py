@@ -31,7 +31,7 @@ options:
   include_allocation_stats:
     type: bool
     description:
-    - Include Allocation stats. Currently can only be requested by Tenant
+    - Include Allocation stats.
   include_machine_assignment:
     type: bool
     description:

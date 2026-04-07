@@ -56,6 +56,16 @@ options:
     type: str
     description:
     - Name for the DPU Extension Service. Must be unique for a given Tenant
+  observability:
+    type: dict
+    description:
+    - Observability configuration for the DPU Extension Service version
+    suboptions:
+      configs:
+        type: list
+        description:
+        - configs parameter.
+        elements: dict
   service_type:
     type: str
     description:
@@ -126,6 +136,18 @@ description=dict(type='str'),
 dpu_extension_service_id=dict(type='str'),
 id=dict(type='str'),
 name=dict(type='str'),
+observability=dict(type='dict', options=dict(
+    configs=dict(type='list', elements='dict', options=dict(
+        logging=dict(type='dict', options=dict(
+            path=dict(type='str', required=True),
+        )),
+        name=dict(type='str'),
+        prometheus=dict(type='dict', options=dict(
+            endpoint=dict(type='str', required=True),
+            scrape_interval_seconds=dict(type='int', required=True),
+        )),
+    )),
+)),
 service_type=dict(type='str', choices=['KubernetesPod']),
 site_id=dict(type='str'),
 state=dict(type='str', choices=['present', 'absent']),
@@ -138,8 +160,8 @@ RESOURCE_CONFIG = {
     'resource_item_path': '/v2/org/{org}/carbide/dpu-extension-service/{dpuExtensionServiceId}',
     'id_param': 'dpuExtensionServiceId',
     'name_field': 'name',
-    'create_schema_fields': ['name', 'description', 'service_type', 'site_id', 'data', 'credentials'],
-    'update_schema_fields': ['name', 'description', 'data', 'credentials'],
+    'create_schema_fields': ['name', 'description', 'service_type', 'site_id', 'data', 'credentials', 'observability'],
+    'update_schema_fields': ['name', 'description', 'data', 'credentials', 'observability'],
     'scope_fields': [],
     'ready_statuses': ['Ready'],
     'error_statuses': ['Error'],

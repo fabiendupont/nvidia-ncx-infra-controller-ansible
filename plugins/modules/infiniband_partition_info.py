@@ -27,6 +27,15 @@ options:
     type: str
     description:
     - 'ID path parameter: infini_band_partition_id.'
+  infiniband_partition_id:
+    type: str
+    description:
+    - Filter InfiniBand Interfaces by InfiniBand Partition ID.  Can be specified multiple times to filter on more than one
+      ID.
+  instance_id:
+    type: str
+    description:
+    - Filter InfiniBand Interfaces by Instance ID.  Can be specified multiple times to filter on more than one ID.
   query:
     type: str
     description:
@@ -34,11 +43,11 @@ options:
   site_id:
     type: str
     description:
-    - Filter Partitions by Site
+    - Filter InfiniBand Interfaces by Site ID.  Can be specified multiple times to filter on more than one ID.
   status:
     type: str
     description:
-    - Filter Partitions by Status
+    - Filter InfiniBand Interfaces by Status. Can be specified multiple times to filter on more than one status.
 '''
 
 EXAMPLES = r'''
@@ -78,16 +87,18 @@ from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import 
 ARGUMENT_SPEC = dict(
 id=dict(type='str'),
 infini_band_partition_id=dict(type='str'),
+infiniband_partition_id=dict(type='str'),
+instance_id=dict(type='str'),
 query=dict(type='str'),
 site_id=dict(type='str'),
 status=dict(type='str'),
 )
 
 RESOURCE_CONFIG = {
-    'resource_path': '/v2/org/{org}/carbide/infiniband-partition',
+    'resource_path': '/v2/org/{org}/carbide/infiniband-interface',
     'resource_item_path': '/v2/org/{org}/carbide/infiniband-partition/{infiniBandPartitionId}',
     'id_param': 'infiniBandPartitionId',
-    'filter_fields': ['site_id', 'status', 'query'],
+    'filter_fields': ['site_id', 'status', 'query', 'site_id', 'instance_id', 'infiniband_partition_id', 'status'],
 }
 
 

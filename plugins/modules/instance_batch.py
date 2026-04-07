@@ -86,7 +86,8 @@ options:
     type: list
     description:
     - Interface configuration shared across all instances. At least one interface must be specified. Either Subnet or VPC
-      Prefix interfaces allowed, only one of the Subnets or VPC Prefixes can be attached over Physical interface.
+      Prefix interfaces allowed, only one of the Subnets or VPC Prefixes can be attached over Physical interface. Interface
+      `ipAddress` is not supported for batch instance creation requests.
     required: true
     elements: dict
     suboptions:
@@ -98,6 +99,10 @@ options:
         type: int
         description:
         - device_instance parameter.
+      ip_address:
+        type: str
+        description:
+        - ip_address parameter.
       is_physical:
         type: bool
         description:
@@ -135,7 +140,9 @@ options:
   nv_link_interfaces:
     type: list
     description:
-    - NVLink interface configuration shared across all instances
+    - NVLink interface configuration shared across all instances. A subset of GPUs may be specified. Each item references
+      one GPU index (`deviceInstance`) and one NVLink Logical Partition. Different interfaces may reference different NVLink
+      Logical Partitions.
     elements: dict
     suboptions:
       device_instance:
@@ -223,6 +230,7 @@ instance_type_id=dict(type='str', required=True),
 interfaces=dict(type='list', required=True, elements='dict', options=dict(
     device=dict(type='str'),
     device_instance=dict(type='int'),
+    ip_address=dict(type='str'),
     is_physical=dict(type='bool'),
     subnet_id=dict(type='str'),
     virtual_function_id=dict(type='int'),

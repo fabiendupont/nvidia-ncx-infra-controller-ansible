@@ -10,11 +10,11 @@ __metaclass__ = type
 
 DOCUMENTATION = r'''
 ---
-module: nvidia.bare_metal.expected_machine
-short_description: Manage Expected Machine resources
+module: nvidia.bare_metal.expected_switch
+short_description: Manage Expected Switch resources
 description:
-- Expected Machine operations allow Infrastructure Providers to pre-register machines that are expected to be discovered at
-  a site.
+- Expected Switch operations allow Infrastructure Providers to pre-register network switches that are expected to be discovered
+  at a site.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -23,32 +23,23 @@ options:
   bmc_mac_address:
     type: str
     description:
-    - MAC address of the Expected Machine's BMC (Baseboard Management Controller)
-  bmc_password:
+    - MAC address of the Expected Switch's BMC (Baseboard Management Controller)
+  default_bmc_password:
     type: str
     description:
-    - Password for accessing the Expected Machine's BMC
-  bmc_username:
+    - Password for accessing the Expected Switch's BMC
+  default_bmc_username:
     type: str
     description:
-    - Username for accessing the Expected Machine's BMC
-  chassis_serial_number:
-    type: str
-    description:
-    - Serial number of the Expected Machine's chassis
+    - Username for accessing the Expected Switch's BMC
   description:
     type: str
     description:
     - Description of this component
-  expected_machine_id:
+  expected_switch_id:
     type: str
     description:
-    - 'ID path parameter: expected_machine_id.'
-  fallback_dpu_serial_numbers:
-    type: list
-    description:
-    - Serial numbers of the Expected Machine's fallback DPUs (Data Processing Units)
-    elements: str
+    - 'ID path parameter: expected_switch_id.'
   firmware_version:
     type: str
     description:
@@ -64,7 +55,7 @@ options:
   labels:
     type: dict
     description:
-    - User-defined key-value pairs for organizing and categorizing Expected Machines
+    - User-defined key-value pairs for organizing and categorizing Expected Switches
   manufacturer:
     type: str
     description:
@@ -77,6 +68,14 @@ options:
     type: str
     description:
     - Display name for this component
+  nv_os_password:
+    type: str
+    description:
+    - NvOS password for the Expected Switch
+  nv_os_username:
+    type: str
+    description:
+    - NvOS username for the Expected Switch
   rack_id:
     type: str
     description:
@@ -84,11 +83,7 @@ options:
   site_id:
     type: str
     description:
-    - ID of the site the Expected Machine belongs to
-  sku_id:
-    type: str
-    description:
-    - Optional ID of the SKU to associate with this Expected Machine
+    - ID of the site the Expected Switch belongs to
   slot_id:
     type: int
     description:
@@ -100,6 +95,10 @@ options:
     choices:
     - present
     - absent
+  switch_serial_number:
+    type: str
+    description:
+    - Serial number of the Expected Switch
   tray_idx:
     type: int
     description:
@@ -116,21 +115,21 @@ options:
 
 EXAMPLES = r'''
 ---
-- name: Create a Expected Machine
-  nvidia.bare_metal.expected_machine:
+- name: Create a Expected Switch
+  nvidia.bare_metal.expected_switch:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
     state: present
-    name: "my-expected-machine"
+    name: "my-expected-switch"
 
-- name: Delete a Expected Machine
-  nvidia.bare_metal.expected_machine:
+- name: Delete a Expected Switch
+  nvidia.bare_metal.expected_switch:
     api_url: "{{ api_url }}"
     api_token: "{{ api_token }}"
     org: "{{ org }}"
     state: absent
-    name: "my-expected-machine"
+    name: "my-expected-switch"
 '''
 
 RETURN = r'''
@@ -148,12 +147,10 @@ from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import 
 
 ARGUMENT_SPEC = dict(
 bmc_mac_address=dict(type='str'),
-bmc_password=dict(type='str'),
-bmc_username=dict(type='str'),
-chassis_serial_number=dict(type='str'),
+default_bmc_password=dict(type='str'),
+default_bmc_username=dict(type='str'),
 description=dict(type='str'),
-expected_machine_id=dict(type='str'),
-fallback_dpu_serial_numbers=dict(type='list', elements='str'),
+expected_switch_id=dict(type='str'),
 firmware_version=dict(type='str'),
 host_id=dict(type='int'),
 id=dict(type='str'),
@@ -161,24 +158,26 @@ labels=dict(type='dict'),
 manufacturer=dict(type='str'),
 model=dict(type='str'),
 name=dict(type='str'),
+nv_os_password=dict(type='str'),
+nv_os_username=dict(type='str'),
 rack_id=dict(type='str'),
 site_id=dict(type='str'),
-sku_id=dict(type='str'),
 slot_id=dict(type='int'),
 state=dict(type='str', choices=['present', 'absent']),
+switch_serial_number=dict(type='str'),
 tray_idx=dict(type='int'),
 wait=dict(type='bool'),
 wait_timeout=dict(type='int'),
 )
 
 RESOURCE_CONFIG = {
-    'resource_path': '/v2/org/{org}/carbide/expected-machine',
-    'resource_item_path': '/v2/org/{org}/carbide/expected-machine/{expectedMachineId}',
-    'id_param': 'expectedMachineId',
+    'resource_path': '/v2/org/{org}/carbide/expected-switch',
+    'resource_item_path': '/v2/org/{org}/carbide/expected-switch/{expectedSwitchId}',
+    'id_param': 'expectedSwitchId',
     'name_field': 'name',
-    'create_schema_fields': ['site_id', 'bmc_mac_address', 'bmc_username', 'bmc_password', 'chassis_serial_number', 'fallback_dpu_serial_numbers', 'sku_id', 'rack_id', 'name', 'manufacturer', 'model', 'description', 'firmware_version', 'slot_id', 'tray_idx', 'host_id', 'labels'],
-    'update_schema_fields': ['id', 'bmc_mac_address', 'bmc_username', 'bmc_password', 'chassis_serial_number', 'fallback_dpu_serial_numbers', 'sku_id', 'rack_id', 'name', 'manufacturer', 'model', 'description', 'firmware_version', 'slot_id', 'tray_idx', 'host_id', 'labels'],
-    'scope_fields': ['site_id'],
+    'create_schema_fields': ['site_id', 'bmc_mac_address', 'default_bmc_username', 'default_bmc_password', 'switch_serial_number', 'nv_os_username', 'nv_os_password', 'rack_id', 'name', 'manufacturer', 'model', 'description', 'firmware_version', 'slot_id', 'tray_idx', 'host_id', 'labels'],
+    'update_schema_fields': ['id', 'bmc_mac_address', 'default_bmc_username', 'default_bmc_password', 'switch_serial_number', 'nv_os_username', 'nv_os_password', 'rack_id', 'name', 'manufacturer', 'model', 'description', 'firmware_version', 'slot_id', 'tray_idx', 'host_id', 'labels'],
+    'scope_fields': [],
     'ready_statuses': ['Ready'],
     'error_statuses': ['Error'],
     'no_create': False,

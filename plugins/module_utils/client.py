@@ -102,15 +102,22 @@ class BareMetalClient(object):
         """GET a collection with automatic pagination.
 
         Returns the complete list of resources across all pages.
+        When accessing through the NVIDIA proxy (path_prefix != 'carbide'),
+        query parameters and pagination are skipped because the proxy
+        rejects unknown parameters.  Client-side filtering is applied
+        after fetching results.
         """
         results = []
+        direct_api = (self.path_prefix == 'carbide')
         page = 1
         page_size = 100
 
         while True:
-            query_params = dict(params or {})
-            query_params['pageNumber'] = page
-            query_params['pageSize'] = page_size
+            query_params = {}
+            if direct_api:
+                query_params.update(params or {})
+                query_params['pageNumber'] = page
+                query_params['pageSize'] = page_size
 
             query_parts = []
             for k, v in sorted(query_params.items()):
@@ -133,8 +140,18 @@ class BareMetalClient(object):
                 status = resp.getcode()
                 raw = resp.read()
             except Exception as e:
+                error_body = ''
+                error_status = getattr(e, 'code', None)
+                if error_status is not None:
+                    try:
+                        error_body = e.read().decode('utf-8')
+                    except Exception:
+                        pass
                 self.module.fail_json(
-                    msg='API list request %s failed: %s' % (url, str(e)),
+                    msg='API list request %s failed: %s%s' % (
+                        url, str(e),
+                        ' - %s' % error_body if error_body else '',
+                    ),
                 )
                 return results
 
@@ -154,6 +171,9 @@ class BareMetalClient(object):
 
             results.extend(items)
 
+            if not direct_api:
+                break
+
             # Check pagination header
             pagination_header = resp.headers.get('X-Pagination', '')
             if pagination_header:
@@ -168,6 +188,13 @@ class BareMetalClient(object):
                 break
 
             page += 1
+
+        # When using the proxy, filter results client-side since query
+        # parameters cannot be forwarded.
+        if not direct_api and params:
+            for key, value in params.items():
+                if value is not None:
+                    results = [r for r in results if r.get(key) == value]
 
         return results
 

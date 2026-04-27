@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.network_security_group_info
 short_description: Retrieve Network Security Group information
 description:
-- Network Security Group operations
+- Network Security Group is a security policy that controls the traffic flowing between Instances.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

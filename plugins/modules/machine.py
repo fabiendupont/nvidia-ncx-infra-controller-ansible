@@ -13,7 +13,8 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.machine
 short_description: Manage Machine resources
 description:
-- Machine operations
+- Machine is a physical server that contains CPUs, GPUs, memory, storage, and networking hardware. Machines are the physical
+  building blocks of a Site.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

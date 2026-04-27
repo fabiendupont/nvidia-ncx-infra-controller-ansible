@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.vpc
 short_description: Manage VPC resources
 description:
-- VPC operations
+- VPC defines the networking isolation boundary for Tenant's Instances.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -51,6 +51,12 @@ options:
     type: str
     description:
     - ID of the default NVLink Logical Partition that GPUs for all Instances in the VPC will attach to
+  routing_profile:
+    type: str
+    description:
+    - Specify routing profile for the VPC. Only supported when `networkVirtualizationType` is set to `FNN`, or when `networkVirtualizationType`
+      is omitted and Site has Native Networking enabled. Requires Tenant to have elevated privilege. Current accepted values
+      are `privileged-internal`, `internal`, and `external`.
   site_id:
     type: str
     description:
@@ -120,6 +126,7 @@ name=dict(type='str'),
 network_security_group_id=dict(type='str'),
 network_virtualization_type=dict(type='str', choices=['ETHERNET_VIRTUALIZER', 'FNN']),
 nv_link_logical_partition_id=dict(type='str'),
+routing_profile=dict(type='str'),
 site_id=dict(type='str'),
 state=dict(type='str', choices=['present', 'absent']),
 vni=dict(type='int'),
@@ -133,7 +140,7 @@ RESOURCE_CONFIG = {
     'resource_item_path': '/v2/org/{org}/carbide/vpc/{vpcId}',
     'id_param': 'vpcId',
     'name_field': 'name',
-    'create_schema_fields': ['id', 'name', 'description', 'site_id', 'network_virtualization_type', 'network_security_group_id', 'vni', 'nv_link_logical_partition_id', 'labels'],
+    'create_schema_fields': ['id', 'name', 'description', 'site_id', 'network_virtualization_type', 'routing_profile', 'network_security_group_id', 'vni', 'nv_link_logical_partition_id', 'labels'],
     'update_schema_fields': ['name', 'description', 'network_security_group_id', 'nv_link_logical_partition_id', 'labels'],
     'scope_fields': ['site_id'],
     'ready_statuses': ['Ready'],

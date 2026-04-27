@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.vpc_info
 short_description: Retrieve VPC information
 description:
-- VPC operations
+- VPC defines the networking isolation boundary for Tenant's Instances.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -26,7 +26,13 @@ options:
   network_security_group_id:
     type: str
     description:
-    - Filter VPCs by NetworkSecurityGroup ID
+    - Filter VPCs by Network Security Group ID. Can be specified multiple times to filter on more than one Network Security
+      Group.
+  nv_link_logical_partition_id:
+    type: str
+    description:
+    - Filter VPCs by NVLink Logical Partition ID. Can be specified multiple times to filter on more than one NVLink Logical
+      Partition.
   query:
     type: str
     description:
@@ -34,11 +40,11 @@ options:
   site_id:
     type: str
     description:
-    - Filter VPCs by Site ID
+    - Filter VPCs by Site ID. Can be specified multiple times to filter on more than one Site.
   status:
     type: str
     description:
-    - Filter VPCs by Status
+    - Filter VPCs by Status. Can be specified multiple times to filter on more than one Status.
   vpc_id:
     type: str
     description:
@@ -82,6 +88,7 @@ from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import 
 ARGUMENT_SPEC = dict(
 id=dict(type='str'),
 network_security_group_id=dict(type='str'),
+nv_link_logical_partition_id=dict(type='str'),
 query=dict(type='str'),
 site_id=dict(type='str'),
 status=dict(type='str'),
@@ -92,7 +99,7 @@ RESOURCE_CONFIG = {
     'resource_path': '/v2/org/{org}/carbide/vpc',
     'resource_item_path': '/v2/org/{org}/carbide/vpc/{vpcId}',
     'id_param': 'vpcId',
-    'filter_fields': ['site_id', 'status', 'query', 'network_security_group_id'],
+    'filter_fields': ['site_id', 'status', 'network_security_group_id', 'nv_link_logical_partition_id', 'query'],
 }
 
 

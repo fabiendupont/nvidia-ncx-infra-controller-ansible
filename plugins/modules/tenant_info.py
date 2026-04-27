@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.tenant_info
 short_description: Retrieve Tenant information
 description:
-- Tenant issues a unique identifier for a Tenant and contains information about their Org
+- Tenant is the anchor entity for an organization that consumes Network and Compute resources on a Site.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

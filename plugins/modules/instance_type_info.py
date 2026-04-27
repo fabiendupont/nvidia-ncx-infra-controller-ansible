@@ -13,7 +13,8 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.instance_type_info
 short_description: Retrieve Instance Type information
 description:
-- Instance Types allow grouping two or more Machines into a pool which can be specified when creating an Instance.
+- Instance Types allow grouping Machines into a pool defined by their capabilities. Providers can then allocate a portion
+  of the Instance Type pool to a Tenant.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -39,7 +40,7 @@ options:
   infrastructure_provider_id:
     type: str
     description:
-    - Filter Instance Types by Infrastructure Provider ID
+    - Filter Instance Types by Infrastructure Provider ID.
   instance_type_id:
     type: str
     description:
@@ -60,7 +61,7 @@ options:
   tenant_id:
     type: str
     description:
-    - Filter Instance Types by Tenant ID
+    - Filter Instance Types by Tenant ID.
 '''
 
 EXAMPLES = r'''

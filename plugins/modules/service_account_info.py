@@ -13,7 +13,10 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.service_account_info
 short_description: Retrieve Service Account information
 description:
-- When API service is configured in Service Account mode, API users can act as both Provider and Tenant
+- 'When API service is configured in Service Account mode, API users can act as both Provider and Tenant. For service accounts,
+  the Tenant entity is initialized as a
+
+  privileged Tenant with `targetedInstanceCreation` capability enabled.'
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

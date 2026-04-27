@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.instance
 short_description: Manage Instance resources
 description:
-- Instance is a Machine provisioned with an Operating System for a Tenant and attached to one or more Subnets
+- Instance is a Machine provisioned with an Operating System by a Tenant and attached to one or more VPC Prefixes or Subnets.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -22,8 +22,8 @@ options:
   allow_unhealthy_machine:
     type: bool
     description:
-    - Must be set to true creating a targeted Instance with a Machine that is in Error status. Requires Targeted Instance
-      Creation capability enabled for Tenant
+    - Set to true in order to target Machines are in maintenance or have health alerts preventing regular provision flow.
+      Requires Targeted Instance Creation capability enabled for Tenant
   always_boot_with_custom_ipxe:
     type: bool
     description:
@@ -204,6 +204,13 @@ options:
     description:
     - When specified along with triggerReboot, the Instance will boot using the custom iPXE specified by OS. If Instance has
       alwaysBootWithCustomIpxe flag set then this value will be ignored.
+  secondary_vpc_ids:
+    type: list
+    description:
+    - IDs of additional VPCs the Instance should attach to through non-primary interfaces. This field may only be specified
+      when every entry in `interfaces` uses `vpcPrefixId`. IDs must be unique, must be valid UUIDs, and must not include the
+      primary `vpcId`.
+    elements: str
   ssh_key_group_ids:
     type: list
     description:
@@ -321,6 +328,7 @@ nv_link_interfaces=dict(type='list', elements='dict', options=dict(
 operating_system_id=dict(type='str'),
 phone_home_enabled=dict(type='bool'),
 reboot_with_custom_ipxe=dict(type='bool'),
+secondary_vpc_ids=dict(type='list', elements='str'),
 ssh_key_group_ids=dict(type='list', elements='str'),
 state=dict(type='str', choices=['present', 'absent']),
 tenant_id=dict(type='str'),
@@ -336,8 +344,8 @@ RESOURCE_CONFIG = {
     'resource_item_path': '/v2/org/{org}/carbide/instance/{instanceId}',
     'id_param': 'instanceId',
     'name_field': 'name',
-    'create_schema_fields': ['name', 'description', 'tenant_id', 'instance_type_id', 'machine_id', 'vpc_id', 'user_data', 'operating_system_id', 'network_security_group_id', 'ipxe_script', 'always_boot_with_custom_ipxe', 'phone_home_enabled', 'labels', 'interfaces', 'infiniband_interfaces', 'dpu_extension_service_deployments', 'nv_link_interfaces', 'ssh_key_group_ids', 'allow_unhealthy_machine'],
-    'update_schema_fields': ['name', 'description', 'trigger_reboot', 'reboot_with_custom_ipxe', 'apply_updates_on_reboot', 'operating_system_id', 'ipxe_script', 'ssh_key_group_ids', 'network_security_group_id', 'user_data', 'always_boot_with_custom_ipxe', 'phone_home_enabled', 'labels', 'interfaces', 'infiniband_interfaces', 'nv_link_interfaces', 'dpu_extension_service_deployments'],
+    'create_schema_fields': ['name', 'description', 'tenant_id', 'instance_type_id', 'machine_id', 'vpc_id', 'secondary_vpc_ids', 'user_data', 'operating_system_id', 'network_security_group_id', 'ipxe_script', 'always_boot_with_custom_ipxe', 'phone_home_enabled', 'labels', 'interfaces', 'infiniband_interfaces', 'dpu_extension_service_deployments', 'nv_link_interfaces', 'ssh_key_group_ids', 'allow_unhealthy_machine'],
+    'update_schema_fields': ['name', 'description', 'trigger_reboot', 'reboot_with_custom_ipxe', 'apply_updates_on_reboot', 'operating_system_id', 'ipxe_script', 'ssh_key_group_ids', 'network_security_group_id', 'user_data', 'always_boot_with_custom_ipxe', 'phone_home_enabled', 'labels', 'secondary_vpc_ids', 'interfaces', 'infiniband_interfaces', 'nv_link_interfaces', 'dpu_extension_service_deployments'],
     'scope_fields': [],
     'ready_statuses': ['Ready'],
     'error_statuses': ['Error'],

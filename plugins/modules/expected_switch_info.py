@@ -13,8 +13,10 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.expected_switch_info
 short_description: Retrieve Expected Switch information
 description:
-- Expected Switch operations allow Infrastructure Providers to pre-register network switches that are expected to be discovered
-  at a site.
+- 'Expected Switch identifies a Switch that is expected to be discovered at a Site. Infrastructure Providers can pre-register
+  Expected Switches using BMC, NvOS credentials
+
+  and serial numbers to help with Switch discovery and ingestion.'
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

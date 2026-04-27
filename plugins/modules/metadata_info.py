@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.metadata_info
 short_description: Retrieve Metadata information
 description:
-- Metadata describes various system level attributes of the API server
+- Metadata describes various system level attributes of the API service.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

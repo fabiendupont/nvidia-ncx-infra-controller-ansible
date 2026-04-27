@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.tray_power
 short_description: Manage Tray resources
 description:
-- Tray operations
+- Tray represents a component within a Rack.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

@@ -13,7 +13,8 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.machine_capability_info
 short_description: Retrieve Machine Capability information
 description:
-- Machine Capability operations
+- Machine Capability defines the hardware capabilities of a Machine. Machine Capabilities can be used to group Machines into
+  Instance Types.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

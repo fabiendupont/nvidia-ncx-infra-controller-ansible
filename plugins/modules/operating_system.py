@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.operating_system
 short_description: Manage Operating System resources
 description:
-- Operating System operations
+- Operating Systems in NICo are typically iPXE scripts that are used to boot Machines.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -59,7 +59,7 @@ options:
   infrastructure_provider_id:
     type: str
     description:
-    - Specified if a Provider owns the Operating System
+    - 'Deprecated: Infrastructure Provider is now inferred from org membership.'
   ipxe_script:
     type: str
     description:
@@ -107,7 +107,7 @@ options:
   tenant_id:
     type: str
     description:
-    - Specified if a Tenant owns the Operating System
+    - 'Deprecated: Tenant is now inferred from org membership.'
   user_data:
     type: str
     description:

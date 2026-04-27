@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.vpc_peering
 short_description: Manage VPC Peering resources
 description:
-- VPC Peerings are network connections between two VPCs on the same site.
+- VPC Peering allows Instances in one VPC to communicate with Instances in another VPC on the same Site.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

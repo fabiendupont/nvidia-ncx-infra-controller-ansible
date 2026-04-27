@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.ip_block_info
 short_description: Retrieve IP Block information
 description:
-- IP Block is a set of IP addresses defined by a prefix and prefix length.
+- IP Block is a contiguous block of IP addresses defined by a prefix and prefix length.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

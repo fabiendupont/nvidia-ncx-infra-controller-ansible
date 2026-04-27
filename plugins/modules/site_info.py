@@ -13,7 +13,8 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.site_info
 short_description: Retrieve Site information
 description:
-- Site operations
+- Site is a datacenter that contains physical hardware and networking resources. All resources created by Provider or Tenant
+  are directly or indirectly anchored to the Site object.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

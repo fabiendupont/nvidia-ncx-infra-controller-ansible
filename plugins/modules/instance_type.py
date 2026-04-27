@@ -13,7 +13,8 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.instance_type
 short_description: Manage Instance Type resources
 description:
-- Instance Types allow grouping two or more Machines into a pool which can be specified when creating an Instance.
+- Instance Types allow grouping Machines into a pool defined by their capabilities. Providers can then allocate a portion
+  of the Instance Type pool to a Tenant.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

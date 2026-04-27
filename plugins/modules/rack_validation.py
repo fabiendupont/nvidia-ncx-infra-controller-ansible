@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.rack_validation
 short_description: Manage Rack resources
 description:
-- Rack operations
+- Rack is a physical enclosure that contains a number of Machines. Racks are the physical building blocks of a Site.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

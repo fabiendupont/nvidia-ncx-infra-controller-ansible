@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.ssh_key
 short_description: Manage SSH Key resources
 description:
-- SSH Key allows access to Serial Console
+- SSH Key is a public key that can be used to access the Serial Console of an Instance.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

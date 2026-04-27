@@ -161,6 +161,13 @@ options:
     type: bool
     description:
     - When set to true, the Instances will be enabled with the Phone Home service.
+  secondary_vpc_ids:
+    type: list
+    description:
+    - IDs of additional VPCs the Instances should attach to through non-primary interfaces. This field may only be specified
+      when every entry in `interfaces` uses `vpcPrefixId`. IDs must be unique, must be valid UUIDs, and must not include the
+      primary `vpcId`.
+    elements: str
   ssh_key_group_ids:
     type: list
     description:
@@ -246,6 +253,7 @@ nv_link_interfaces=dict(type='list', elements='dict', options=dict(
 )),
 operating_system_id=dict(type='str'),
 phone_home_enabled=dict(type='bool'),
+secondary_vpc_ids=dict(type='list', elements='str'),
 ssh_key_group_ids=dict(type='list', elements='str'),
 tenant_id=dict(type='str', required=True),
 topology_optimized=dict(type='bool'),
@@ -255,7 +263,7 @@ vpc_id=dict(type='str', required=True),
 
 RESOURCE_CONFIG = {
     'resource_path': '/v2/org/{org}/carbide/instance/batch',
-    'create_schema_fields': ['name_prefix', 'count', 'description', 'tenant_id', 'instance_type_id', 'vpc_id', 'user_data', 'operating_system_id', 'network_security_group_id', 'ipxe_script', 'always_boot_with_custom_ipxe', 'phone_home_enabled', 'labels', 'interfaces', 'infiniband_interfaces', 'dpu_extension_service_deployments', 'nv_link_interfaces', 'ssh_key_group_ids', 'topology_optimized'],
+    'create_schema_fields': ['name_prefix', 'count', 'description', 'tenant_id', 'instance_type_id', 'vpc_id', 'secondary_vpc_ids', 'user_data', 'operating_system_id', 'network_security_group_id', 'ipxe_script', 'always_boot_with_custom_ipxe', 'phone_home_enabled', 'labels', 'interfaces', 'infiniband_interfaces', 'dpu_extension_service_deployments', 'nv_link_interfaces', 'ssh_key_group_ids', 'topology_optimized'],
 }
 
 

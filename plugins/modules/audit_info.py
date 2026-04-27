@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.audit_info
 short_description: Retrieve Audit information
 description:
-- Audit operations
+- Audit is a record of actions taken by users on the API.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

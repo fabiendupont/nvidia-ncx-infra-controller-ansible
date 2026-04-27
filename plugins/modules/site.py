@@ -13,7 +13,8 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.site
 short_description: Manage Site resources
 description:
-- Site operations
+- Site is a datacenter that contains physical hardware and networking resources. All resources created by Provider or Tenant
+  are directly or indirectly anchored to the Site object.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -31,7 +32,7 @@ options:
   description:
     type: str
     description:
-    - description parameter.
+    - Description for the Site
   id:
     type: str
     description:
@@ -39,11 +40,13 @@ options:
   is_serial_console_enabled:
     type: bool
     description:
-    - Enable/disable Serial Console. Can only be updated by Provider
+    - Enable/disable Serial Console. Can only be updated by Provider. Modifying this attribute has no actual effect on SOL.
+      It will be removed in a future API version.
   is_serial_console_ssh_keys_enabled:
     type: bool
     description:
-    - Enable/disable Serial Console access using SSH Keys. Can only be updated by Tenant
+    - Enable/disable Serial Console access using SSH Keys. Previously updateable only by Tenants, modifying this value is
+      no longer supported, update SSH Key Groups to remove Site instead.
   location:
     type: dict
     description:
@@ -64,7 +67,7 @@ options:
   name:
     type: str
     description:
-    - name parameter.
+    - Name for the Site
   renew_registration_token:
     type: bool
     description:
@@ -76,11 +79,13 @@ options:
   serial_console_idle_timeout:
     type: int
     description:
-    - Maximum idle time in seconds before Serial Console is disconnected. Can only be updated by Provider
+    - Maximum idle time in seconds before Serial Console is disconnected. Can only be updated by Provider. Modifying this
+      attribute has no actual effect on SOL. It will be removed in a future API version.
   serial_console_max_session_length:
     type: int
     description:
-    - Maximum length of Serial Console session in seconds. Can only be updated by Provider
+    - Maximum length of Serial Console session in seconds. Can only be updated by Provider. Modifying this attribute has no
+      actual effect on SOL. It will be removed in a future API version.
   site_id:
     type: str
     description:

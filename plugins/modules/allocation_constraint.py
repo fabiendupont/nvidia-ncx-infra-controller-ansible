@@ -30,7 +30,7 @@ options:
   constraint_type:
     type: str
     description:
-    - constraint_type parameter.
+    - Type of the Allocation Constraint. Please note that OnDemand and Preemptible are not supported by current implementation.
     choices:
     - Reserved
     - OnDemand
@@ -38,7 +38,8 @@ options:
   constraint_value:
     type: int
     description:
-    - constraint_value parameter.
+    - Value of the Allocation Constraint. For InstanceType, this value represents number of Machines allocated for Tenant.
+      For IPBlock, this value represents the prefix Length of the IP Block.
   id:
     type: str
     description:
@@ -46,14 +47,15 @@ options:
   resource_type:
     type: str
     description:
-    - resource_type parameter.
+    - Type of the Resource that the Allocation Constraint applies to
     choices:
     - InstanceType
     - IPBlock
   resource_type_id:
     type: str
     description:
-    - resource_type_id parameter.
+    - ID of the Resource Type that the Allocation Constraint applies to. For InstanceType, this is the ID of the Instance
+      Type. For IPBlock, this is the ID of the IP Block.
   state:
     type: str
     description:

@@ -13,7 +13,11 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.infiniband_partition
 short_description: Manage InfiniBand Partition resources
 description:
-- Partitions provide networking support for high-performance computing that features very high throughput and very low latency.
+- 'InfiniBand (IB) is a high-performance, low-latency networking standard designed for interconnecting servers and storage
+  in HPC (High-Performance Computing) and AI systems,
+
+  utilizing RDMA (Remote Direct Memory Access) to reduce CPU overhead. InfiniBand Partitions are used to group Machines into
+  logical partitions for network isolation and load distribution.'
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -31,6 +35,10 @@ options:
     type: str
     description:
     - 'ID path parameter: infini_band_partition_id.'
+  labels:
+    type: dict
+    description:
+    - String key value pairs describing Partition labels. Up to 10 key value pairs can be specified
   name:
     type: str
     description:
@@ -92,6 +100,7 @@ ARGUMENT_SPEC = dict(
 description=dict(type='str'),
 id=dict(type='str'),
 infini_band_partition_id=dict(type='str'),
+labels=dict(type='dict'),
 name=dict(type='str'),
 site_id=dict(type='str'),
 state=dict(type='str', choices=['present', 'absent']),
@@ -104,8 +113,8 @@ RESOURCE_CONFIG = {
     'resource_item_path': '/v2/org/{org}/carbide/infiniband-partition/{infiniBandPartitionId}',
     'id_param': 'infiniBandPartitionId',
     'name_field': 'name',
-    'create_schema_fields': ['name', 'description', 'site_id'],
-    'update_schema_fields': ['name', 'description'],
+    'create_schema_fields': ['name', 'description', 'site_id', 'labels'],
+    'update_schema_fields': ['name', 'description', 'labels'],
     'scope_fields': ['site_id'],
     'ready_statuses': ['Ready'],
     'error_statuses': ['Error'],

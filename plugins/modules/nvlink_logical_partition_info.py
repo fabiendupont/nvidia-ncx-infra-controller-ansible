@@ -13,8 +13,8 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.nvlink_logical_partition_info
 short_description: Retrieve NVLink Logical Partition information
 description:
-- NVLink Logical Partitions provide networking support for high-performance computing that features very high throughput and
-  very low latency for GPU to GPU communication.
+- NVLink Logical Partitions are used to group GPUs into logical partitions for shared memory and low-latency direct communication
+  between GPUs.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

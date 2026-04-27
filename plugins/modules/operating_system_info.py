@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.operating_system_info
 short_description: Retrieve Operating System information
 description:
-- Operating System operations
+- Operating Systems in NICo are typically iPXE scripts that are used to boot Machines.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

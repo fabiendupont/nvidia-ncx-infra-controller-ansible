@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.infrastructure_provider_info
 short_description: Retrieve Infrastructure Provider information
 description:
-- Infrastructure Provider issues a unique identifier for a Provider and contains information about their Org
+- Infrastructure Provider is the anchor entity for an organization that owns and manages Site resources.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

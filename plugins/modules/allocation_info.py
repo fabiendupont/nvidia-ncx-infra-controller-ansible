@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.allocation_info
 short_description: Retrieve Allocation information
 description:
-- Allocation operations
+- Allocations are the mechanism by which Provider can delegate Network and Compute resources to Tenant.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -42,7 +42,7 @@ options:
   infrastructure_provider_id:
     type: str
     description:
-    - Filter Allocations by Infrastructure Provider ID
+    - Filter Allocations by Infrastructure Provider ID.
   query:
     type: str
     description:
@@ -71,7 +71,7 @@ options:
   tenant_id:
     type: str
     description:
-    - Filter Allocations by Tenant ID.  Can be specified multiple times to filter on more than one Tenant ID.
+    - Filter Allocations by Tenant ID.
 '''
 
 EXAMPLES = r'''

@@ -13,7 +13,7 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.user_info
 short_description: Retrieve User information
 description:
-- User operations
+- User is a logical entity that identifies individuals operating on behalf of an organization.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:

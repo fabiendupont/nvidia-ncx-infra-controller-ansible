@@ -13,8 +13,10 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.expected_machine
 short_description: Manage Expected Machine resources
 description:
-- Expected Machine operations allow Infrastructure Providers to pre-register machines that are expected to be discovered at
-  a site.
+- 'Expected Machine identifies a Machine that is expected to be discovered at a Site. Infrastructure Providers can pre-register
+  Expected Machines using BMC credentials
+
+  and serial numbers to help with Machine discovery and ingestion.'
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
@@ -24,18 +26,18 @@ options:
     type: str
     description:
     - MAC address of the Expected Machine's BMC (Baseboard Management Controller)
-  bmc_password:
-    type: str
-    description:
-    - Password for accessing the Expected Machine's BMC
-  bmc_username:
-    type: str
-    description:
-    - Username for accessing the Expected Machine's BMC
   chassis_serial_number:
     type: str
     description:
     - Serial number of the Expected Machine's chassis
+  default_bmc_password:
+    type: str
+    description:
+    - Password for accessing the Expected Machine's BMC
+  default_bmc_username:
+    type: str
+    description:
+    - Username for accessing the Expected Machine's BMC
   description:
     type: str
     description:
@@ -148,9 +150,9 @@ from ansible_collections.nvidia.bare_metal.plugins.module_utils.resource import 
 
 ARGUMENT_SPEC = dict(
 bmc_mac_address=dict(type='str'),
-bmc_password=dict(type='str'),
-bmc_username=dict(type='str'),
 chassis_serial_number=dict(type='str'),
+default_bmc_password=dict(type='str'),
+default_bmc_username=dict(type='str'),
 description=dict(type='str'),
 expected_machine_id=dict(type='str'),
 fallback_dpu_serial_numbers=dict(type='list', elements='str'),
@@ -176,8 +178,8 @@ RESOURCE_CONFIG = {
     'resource_item_path': '/v2/org/{org}/carbide/expected-machine/{expectedMachineId}',
     'id_param': 'expectedMachineId',
     'name_field': 'name',
-    'create_schema_fields': ['site_id', 'bmc_mac_address', 'bmc_username', 'bmc_password', 'chassis_serial_number', 'fallback_dpu_serial_numbers', 'sku_id', 'rack_id', 'name', 'manufacturer', 'model', 'description', 'firmware_version', 'slot_id', 'tray_idx', 'host_id', 'labels'],
-    'update_schema_fields': ['id', 'bmc_mac_address', 'bmc_username', 'bmc_password', 'chassis_serial_number', 'fallback_dpu_serial_numbers', 'sku_id', 'rack_id', 'name', 'manufacturer', 'model', 'description', 'firmware_version', 'slot_id', 'tray_idx', 'host_id', 'labels'],
+    'create_schema_fields': ['site_id', 'bmc_mac_address', 'default_bmc_username', 'default_bmc_password', 'chassis_serial_number', 'fallback_dpu_serial_numbers', 'sku_id', 'rack_id', 'name', 'manufacturer', 'model', 'description', 'firmware_version', 'slot_id', 'tray_idx', 'host_id', 'labels'],
+    'update_schema_fields': ['id', 'bmc_mac_address', 'default_bmc_username', 'default_bmc_password', 'chassis_serial_number', 'fallback_dpu_serial_numbers', 'sku_id', 'rack_id', 'name', 'manufacturer', 'model', 'description', 'firmware_version', 'slot_id', 'tray_idx', 'host_id', 'labels'],
     'scope_fields': ['site_id'],
     'ready_statuses': ['Ready'],
     'error_statuses': ['Error'],

@@ -13,7 +13,8 @@ DOCUMENTATION = r'''
 module: nvidia.bare_metal.dpu_extension_service
 short_description: Manage DPU Extension Service resources
 description:
-- DPU Extension Service allows users to run custom services in the DPUs of their Instances
+- DPU Extension Service allows users to run custom services in the DPUs of their Instances. Currently K8s pods are the only
+  supported service type.
 version_added: 1.0.0
 author: NVIDIA Bare Metal Manager Dev Team
 extends_documentation_fragment:
